@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <style>
+        table {
+            width: 60%; border: 1px double black;
+            border-collapse: collapse;
+        }
+        th, td {
+            height: 30px; border: 1px double black;
+            border-collapse: collapse;
+        }
+    
+    </style>
+</head>
+<body>
+    <center>
+    <p>
+    Nama: <input id='name' type="text" placeholder="Ketik nama ...">
+    Tgl. Lahir: <input id='tgl' type="date" placeholder="Tanggal lahir...">
+    Kota: <input id='city' type="text" placeholder="Ketik kota ...">
+    </p>
+    <button onclick="data()">D A F T A R</button><br/><br/>
+    <button onclick="sortnamea()">Sort Nama (a-z)</button>
+    <button onclick="sortnameb()">Sort Nama (z-a)</button>
+    <button onclick="sortagea()">Sort Usia (0-9)</button>
+    <button onclick="sortageb()">Sort Usia (9-0)</button>
+    <button onclick="sortcitya()">Sort Kota (a-z)</button>
+    <button onclick="sortcityb()">Sort Kota (z-a)</button>
+    <br><br>
+    <table id="table">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+    </table>
+    </center>
+    <script>
+    var users = []
+        function data(){
+            document.getElementById("thead").innerHTML =
+            '<tr><th>Nama</th><th colspan="3">Tanggal Lahir</th><th>Zodiak</th><th>Usia</th><th>Pensiun</th><th>Kota</th><th>Hapus</th></tr>'
+            
+            var bulan = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei',
+            'Juni', 'Juli', 'Agustus', 'September', 'Oktober',
+            'November', 'Desember'
+            ]
+            
+            var tgl = document.getElementById('tgl').value
+            var a = new Date(tgl)
+
+            var date = a.getDate()
+            var month = bulan[a.getMonth()]
+            var year = a.getFullYear()
+
+            document.getElementById("tbody").innerHTML = ''
+            var usiaa = function(){
+                        var now = new Date()
+                        return(
+                            now.getFullYear() - year
+                        )
+                    }
+            var pensiunn = function(){
+                        return(
+                            55 - usiaa()
+                        )
+                    }
+
+            if(date >= 21 && month == 'Maret' || date <= 19 && month == 'April'){
+                var zod = 'Aries' 
+            }
+            else if(date >= 20 && month == 'April' || date <= 20 && month == 'Mei'){
+                var zod = 'Taurus' 
+            }
+            else if(date >= 21 && month == 'Mei' || date <= 20 && month == 'Juni'){
+                var zod = 'Gemini' 
+            }
+            else if(date >= 21 && month == 'Juni' || date <= 22 && month == 'Juli'){
+                var zod = 'Cancer' 
+            }
+            else if(date >= 23 && month == 'Juli' || date <= 22 && month == 'Agustus'){
+                var zod = 'Leo' 
+            }
+            else if(date >= 23 && month == 'Agustus' || date <= 22 && month == 'September'){
+                var zod = 'Virgo' 
+            }
+            else if(date >= 23 && month == 'September' || date <= 22 && month == 'Oktober'){
+                var zod = 'Libra' 
+            }
+            else if(date >= 23 && month == 'Oktober' || date <= 21 && month == 'November'){
+                var zod = 'Scorpio' 
+            }
+            else if(date >= 22 && month == 'November' || date <= 21 && month == 'Desember'){
+                var zod = 'Sagitarius' 
+            }
+            else if(date >= 22 && month == 'Desember' || date <= 19 && month == 'Januari'){
+                var zod = 'Capricorn' 
+            }
+            else if(date >= 20 && month == 'Januari' || date <= 18 && month == 'Februari'){
+                var zod = 'Aquarius' 
+            }
+            else{
+                var zod = 'Pisces' 
+            }
+
+            var dataUser = {
+                nama: document.getElementById('name').value,
+                tanggal: date,
+                bulan: month,
+                tahun: year,
+                usia: usiaa(),
+                kota: document.getElementById('city').value,
+                zodiak: zod,
+                pensiun: pensiunn()
+            }
+            users.push(dataUser)
+            
+            click();  
+        }
+
+        function click(){
+            document.getElementById("tbody").innerHTML = ''
+            for(var i=0; i<users.length; i++){
+                document.getElementById("tbody").innerHTML +=
+                '<tr>' +
+                '<th>' + users[i].nama + '</th>' +
+                '<th>' + users[i].tanggal + '</th>' +
+                '<th>' + users[i].bulan + '</th>' +
+                '<th>' + users[i].tahun + '</th>' +
+                '<th>' + users[i].zodiak + '</th>' +
+                '<th>' + users[i].usia + '</th>' +
+                '<th>' + users[i].pensiun + '</th>' +
+                '<th>' + users[i].kota + '</th>' +
+                '<th>' + '<input type="button" onclick="hapus(this)" id="delete" value="Hapus"/>' + '</th>' +
+                '</tr>'
+            }
+        }
+
+        function sortnamea(){
+            for(var i=0; i<users.length; i++){
+                users.sort(function(a,b){
+                    if(a.nama == b.nama){
+                        return 0;
+                    }
+                    else if(a.nama < b.nama){
+                        return -1;
+                    }
+                    else{
+                        return 1;
+                    }
+                })
+
+                click();
+            }
+        }  
+        function sortnameb(){
+            for(var i=0; i<users.length; i++){
+                users.sort(function(a,b){
+                    if(a.nama == b.nama){
+                        return 0;
+                    }
+                    else if(a.nama < b.nama){
+                        return 1;
+                    }
+                    else{
+                        return -1;
+                    }
+                })
+                
+                click();
+            }
+        } 
+
+        function sortagea(){
+            for(var i=0; i<users.length; i++){
+                users.sort(function(a,b){
+                return a.usia - b.usia
+                })
+
+                click();
+            }
+        }  
+        function sortageb(){
+            document.getElementById("tbody").innerHTML = ''
+            for(var i=0; i<users.length; i++){
+                users.sort(function(a,b){
+                return b.usia - a.usia
+                })
+
+                click();
+            }
+        }
+
+        function sortcitya(){
+            for(var i=0; i<users.length; i++){
+                users.sort(function(a,b){
+                    if(a.kota == b.kota){
+                        return 0;
+                    }
+                    else if(a.kota < b.kota){
+                        return -1;
+                    }
+                    else{
+                        return 1;
+                    }
+                })
+                
+                click();
+            }
+        }  
+        function sortcityb(){
+            for(var i=0; i<users.length; i++){
+                users.sort(function(a,b){
+                    if(a.kota == b.kota){
+                        return 0;
+                    }
+                    else if(a.kota < b.kota){
+                        return 1;
+                    }
+                    else{
+                        return -1;
+                    }
+                })
+                
+                click();
+            }
+        }
+        
+        function hapus(row){
+            var del = row.parentNode.parentNode.rowIndex
+            document.getElementById('table').deleteRow(del)
+        }
+    </script>
+</body>
+</html>
